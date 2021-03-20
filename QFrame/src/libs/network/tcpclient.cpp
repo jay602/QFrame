@@ -9,8 +9,8 @@ NETWORK_BEGIN_NAMESPACE
 TcpClient::TcpClient()
 {
     m_tcpSocket = new QTcpSocket(this);
-    //QObject::connect(m_tcpSocket, &QTcpSocket::connected, this, &TcpClient::connected);
-   // QObject::connect(m_tcpSocket, &QTcpSocket::readyRead, this, &TcpClient::readyread);
+    QObject::connect(m_tcpSocket, &QTcpSocket::connected, this, &TcpClient::connected);
+    QObject::connect(m_tcpSocket, &QTcpSocket::readyRead, this, &TcpClient::readyread);
 }
 
 TcpClient::~TcpClient()

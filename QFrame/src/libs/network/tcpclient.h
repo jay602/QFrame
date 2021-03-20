@@ -6,6 +6,7 @@
 
 NETWORK_BEGIN_NAMESPACE
 
+
 class NETWORK_SHARED_EXPORT TcpClient : public ClientSocket
 {
     Q_OBJECT

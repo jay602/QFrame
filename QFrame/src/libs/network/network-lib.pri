@@ -1,4 +1,4 @@
-QT       += core network
+QT       += network
 
 DEFINES += NETWORK_LIBRARY
 

@@ -2,11 +2,12 @@
 #define CLIENTSOCKET_H
 
 #include "network_global.h"
+#include "msghandler.h"
 
 NETWORK_BEGIN_NAMESPACE
 
 #include <QObject>
-class MsgHandler;
+
 
 class NETWORK_SHARED_EXPORT ClientSocket : public QObject
 {

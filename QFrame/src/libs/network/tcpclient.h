@@ -17,8 +17,10 @@ public:
     void connect(QString strHost, int port);
 
 private slots:
-    void connected();
-    void readyread();
+    void onConnected();
+    void onReadyReaded();
+    void onDisConnected();
+    void onErrorOccurred(QAbstractSocket::SocketError socketError);
 
 private:
     QTcpSocket * m_tcpSocket;

@@ -7,7 +7,7 @@ MsgHandler::MsgHandler()
 
 }
 
-void MsgHandler::handleMsg()
+void MsgHandler::handleMsg(QByteArray msg, int len)
 {
 
 }
@@ -23,6 +23,11 @@ void MsgHandler::handleOnDisConnected()
 }
 
 void MsgHandler::handleOnRepeatonnected()
+{
+
+}
+
+void MsgHandler::handleError()
 {
 
 }

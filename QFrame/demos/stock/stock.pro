@@ -16,4 +16,8 @@ INCLUDEPATH += ..
 CONFIG += c++11
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    stockmsghandler.cpp
+
+HEADERS += \
+    stockmsghandler.h

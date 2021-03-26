@@ -23,7 +23,11 @@ isEmpty(QTPROJECT_OUT_PWD):         QTPROJECT_OUT_PWD = $$OUT_PWD
 isEmpty(QTPROJECT_PRO_FILE_PWD):    QTPROJECT_PRO_FILE_PWD = $$_PRO_FILE_PWD_
 isEmpty(QTPROJECT_PRO_FILE):        QTPROJECT_PRO_FILE = $$_PRO_FILE_
 
-CONFIG += c++14
+message("---QTPROJECT_DIR : " $$PWD)
+message("---QTPROJECT_OUT_PWD: " $$OUT_PWD)
+message("---QTPROJECT_PRO_FILE_PWD : " $$_PRO_FILE_PWD_)
+message("---_PRO_FILE_ : " $$_PRO_FILE_)
+
 
 defineReplace(qtLibraryTargetName) {
    unset(LIBRARY_NAME)
@@ -118,15 +122,24 @@ equals(TEST, 1) {
 # config IDE_SOURCE_TREE
 IDE_SOURCE_TREE = $$QTPROJECT_DIR
 
+message("IDE_BUILD_TREE : " $$IDE_BUILD_TREE)
+message("IDE_SOURCE_TREE : " $$IDE_SOURCE_TREE)
 isEmpty(IDE_BUILD_TREE) {
     sub_dir = $$QTPROJECT_PRO_FILE_PWD
+    message("11sub_dir : " $$sub_dir)
+    message("111 : " $$re_escape($$IDE_SOURCE_TREE))
+    message("222 : " ^$$re_escape($$IDE_SOURCE_TREE))
     sub_dir ~= s,^$$re_escape($$IDE_SOURCE_TREE),,
+    message("22sub_dir : " $$sub_dir)
+
     greaterThan(QT_MAJOR_VERSION, 4) {
         IDE_BUILD_TREE = $$clean_path($$QTPROJECT_OUT_PWD) # qt5
     } else {
         IDE_BUILD_TREE = $$QTPROJECT_OUT_PWD  # qt4
     }
     IDE_BUILD_TREE ~= s,$$re_escape($$sub_dir)$,,
+
+    message("IDE_BUILD_TREE: " $$IDE_BUILD_TREE)
 }
 
 IDE_APP_PATH = $$IDE_BUILD_TREE/bin

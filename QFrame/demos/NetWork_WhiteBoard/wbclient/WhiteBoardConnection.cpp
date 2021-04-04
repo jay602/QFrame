@@ -47,7 +47,7 @@ void WhiteBoardConnection::onConnected()
     doc.setObject(obj);
     QByteArray joinMsg = doc.toJson(QJsonDocument::Compact);
     joinMsg.append('\n');
-     (joinMsg);
+    write(joinMsg);
 }
 
 

@@ -18,7 +18,8 @@ void  initCodec()//for Qt 4
 }
 
 QString qUrl = QStringLiteral("http://m.weiguanli.cn/setup/微管理-setup-v1.0.exe");
-QString url = "http://download.qt.io/linguist_releases/qtlinguistinstaller-5.12.2.exe";
+//QString url = "http://download.qt.io/linguist_releases/qtlinguistinstaller-5.12.2.exe";
+QString url = "http://115.159.127.79/ihome/download/iot.avi";
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<NetworkError>("NetworkError");
 
     HttpDownloadTask task(QUrl(url), QString("D:\\"), NULL);
-    task.start();
+    //task.start();
     task.getFileInfoSize(url, 3);
 
     return a.exec();

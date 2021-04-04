@@ -3,7 +3,8 @@ include(../../qtproject.pri)
 TEMPLATE  = subdirs
 
 SUBDIRS += \
-    network \
+    network \ \
+    puremvc
 
 for(l, SUBDIRS) {
     QTC_LIB_DEPENDS =

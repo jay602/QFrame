@@ -13,8 +13,7 @@ LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent)
    m_ipText = new QLineEdit(this);
    m_ipText->setText("127.0.0.1");
 
-   m_portText = new QLineEdit("9001", this);
-   m_portText->setText("9001");
+   m_portText = new QLineEdit("9000", this);
 
    m_loginBtn = new QPushButton("Join");
 

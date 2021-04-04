@@ -2,10 +2,14 @@
 #include "loginwidget.h"
 #include "paintwidget.h"
 #include <QStackedWidget>
+#include <QActionGroup>
+#include <QAction>
 #include <QDebug>
+#include <QToolBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , m_toolBar(nullptr)
 {
     m_centralWidget = new QStackedWidget();
     setCentralWidget(m_centralWidget);
@@ -37,6 +41,90 @@ void MainWindow::startLogin()
 
 void MainWindow::onConnected()
 {
+    if(!m_toolBar)
+    {
+        QToolBar *toolbar = addToolBar("Figure Type");
+        QActionGroup *actionGroup = new QActionGroup(toolbar);
+
+        m_toolBar = toolbar;
+
+        QAction *action = toolbar->addAction(QIcon(":/line.png"),
+                                             "Draw a Line",
+                                             this,SLOT(onDrawLineAction()));
+        action->setCheckable(true);
+        action->setChecked(true);
+        action->setActionGroup(actionGroup);
+
+        action = toolbar->addAction(QIcon(":/rect.png"),
+                                    "Draw a Rectangle",
+                                    this,SLOT(onDrawRectangleAction()));
+        action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+
+        action = toolbar->addAction(QIcon(":/oval.png"),
+                                    "Draw a Oval",this,SLOT(onDrawOvalAction()));
+        action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+
+        action = toolbar->addAction(QIcon(":/triangle.png"),
+                                    "Draw a Triangle",this,SLOT(onDrawTriangleAction()));
+        action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+
+        action = toolbar->addAction(QIcon(":/pen.png"),
+                                    "Draw as you like",this,SLOT(onDrawGraffitiAction()));
+        action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+
+        toolbar->addSeparator();
+        action = toolbar ->addAction(QIcon(":/del.png"),
+                                     "Delete the Last",this,SLOT(onUnio()));
+        //action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+
+
+        action = toolbar->addAction(QIcon(":/clear.png"),
+                                    "Clear All",this,SLOT(onClearAll()));
+        //action->setCheckable(true);
+        action->setActionGroup(actionGroup);
+    }
+    else
+        addToolBar(m_toolBar);
     m_centralWidget->setCurrentWidget(m_paintWidget);
+}
+
+void  MainWindow::onDrawLineAction()
+{
+
+}
+
+void  MainWindow::onDrawRectangleAction()
+{
+
+}
+
+void  MainWindow::onDrawOvalAction()
+{
+
+}
+
+void  MainWindow::onDrawTriangleAction()
+{
+
+}
+
+void  MainWindow::onDrawGraffitiAction()
+{
+
+}
+
+void  MainWindow::onUnio()
+{
+
+}
+
+void  MainWindow::onClearAll()
+{
+
 }
 

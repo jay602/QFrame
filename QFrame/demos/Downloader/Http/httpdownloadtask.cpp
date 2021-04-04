@@ -159,16 +159,51 @@ qint64 HttpDownloadTask::getFileInfoSize(QString url, int tryTimes)
         tryTimes = 1;
     }
 
+    QTime time;
+    time.start();
+
+    QNetworkAccessManager mgr;
+    QNetworkRequest req;
+    QEventLoop event;
+    req.setUrl(url);
+    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+    req.setRawHeader("Range",
+                            tr("bytes=%1-").arg(0).toUtf8());
+    QNetworkReply *reply = mgr.head(req);
+    connect(reply, &QNetworkReply::finished, &event, &QEventLoop::quit);
+    event.exec();
+
+    qlonglong length = reply->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+    qInfo() << "Content length:" << length;
+
+    bool supportRange = (reply->rawHeader("Accept-Ranges") == QByteArrayLiteral("bytes"));
+    qInfo() << "support Range:" << supportRange;
+
+    auto cost = time.elapsed();
+    qInfo() << "get header info cost" << cost << " ms";
+
+    return length;
+
+    QNetworkAccessManager manager;
+    QNetworkRequest headReq(url);
+   // headReq.setRawHeader("Content-Length", "0");
+    headReq.setRawHeader("User-Agent", "Rokh.V5");
+    QVariant responseLength = headReq.header(QNetworkRequest::ContentLengthHeader);
+    int fileSize = responseLength.toInt();
+    qDebug()<< QStringLiteral("获取下载文件的大小......") << fileSize;
+//    headReq.setHeader(QNetworkRequest::ContentTypeHeader,
+//                                  "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
      do
      {
-         QNetworkAccessManager manager;
          // 事件循环，等待请求文件头信息结束;
          QEventLoop loop;
          // 超时，结束事件循环;
          QTimer timer;
 
          //发出请求，获取文件地址的头部信息;
-         QNetworkReply *reply = manager.head(QNetworkRequest(url));
+
+         QNetworkReply *reply = manager.head(headReq);
          if (!reply)
              continue;
 
@@ -200,9 +235,10 @@ qint64 HttpDownloadTask::getFileInfoSize(QString url, int tryTimes)
          QVariant var = reply->header(QNetworkRequest::ContentLengthHeader);
          const QList<QNetworkReply::RawHeaderPair> lst = reply->rawHeaderPairs();
          size = var.toLongLong();
+         qDebug() << "file size = " << size;
          for(auto item : lst)
          {
-             qDebug() << "size = " << lst.size();
+             qDebug() << item.first.data() << ":" << item.second.data();
          }
 
          reply->deleteLater();
@@ -217,7 +253,7 @@ int HttpDownloadTask::getRemoteFileSize()
 	QNetworkAccessManager manager;
 	QNetworkRequest headReq(m_taskData.TaskUrl);
     qDebug()<< QStringLiteral("获取下载文件的大小......");
-	headReq.setRawHeader("User-Agent", "Rokh.V5");
+    //headReq.setRawHeader("User-Agent", "Rokh.V5");
 
 	QNetworkReply* headReply = NULL;
 	bool connectError = false;
@@ -273,11 +309,27 @@ int HttpDownloadTask::getRemoteFileSize()
 		}
 	}
 	else
-	{
-		bool bSuc = false; 
-		fSize = headReply->header(QNetworkRequest::ContentLengthHeader).toInt(&bSuc);
-		if(!bSuc)
-			m_error.setUserDefinedError("ContentLength covert failed in func getFileSize!");
+    {
+        bool bSuc = false;
+//		fSize = headReply->header(QNetworkRequest::ContentLengthHeader).toInt(&bSuc);
+
+        QVariant var = headReply->header(QNetworkRequest::ContentLengthHeader);
+        fSize = var.toLongLong();
+        qDebug() << headReply->hasRawHeader("Content-Encoding ");
+        qDebug() << headReply->hasRawHeader("Content-Language");
+        qDebug() << headReply->hasRawHeader("Content-Length");
+        qDebug() << headReply->hasRawHeader("Content-Type");
+        qDebug() << headReply->hasRawHeader("Last-Modified");
+        qDebug() << headReply->hasRawHeader("Expires");
+
+//        if (headReply->hasRawHeader(QString("Content-Length").toUtf8()))
+//        {
+//             fSize = headReply->rawHeader(QString("Content-Length").toUtf8()).toInt();
+//         }
+
+        qDebug() << "file size = " << fSize;
+//		if(!bSuc)
+//			m_error.setUserDefinedError("ContentLength covert failed in func getFileSize!");
 	}
 	headReply->deleteLater();
 	return fSize;

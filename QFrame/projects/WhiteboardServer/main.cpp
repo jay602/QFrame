@@ -1,12 +1,13 @@
-#include <QCoreApplication>
+#include <QApplication>
+#include "wbserverwidget.h"
 #include "whiteboardserver.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
 
-    WhiteboardServer server;
-    server.listen(QHostAddress::Any, 9001);
+    WbServerWidget w;
+    w.show();
 
     return a.exec();
 }
